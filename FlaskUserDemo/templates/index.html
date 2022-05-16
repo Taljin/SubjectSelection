@@ -1,0 +1,19 @@
+{% extends '_layout.html' %}
+
+{% block title %}Home{% endblock %}
+
+{% block content %}
+<h1>hellow</h1>
+
+{% if 'logged_in' in session %}
+<a href="{{ url_for('view_user', id=session['id']) }}">Profile</a>
+<br>
+<a href="{{ url_for('edit', id=session['id']) }}">Edit</a>
+{% endif %}
+<br>
+<br>
+{% if session['role'] == 'admin' %}
+<a href="{{ url_for('list_users') }}">Dashboard</a>
+{% endif %}
+
+{% endblock %}

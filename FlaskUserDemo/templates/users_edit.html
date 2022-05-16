@@ -1,0 +1,39 @@
+{% extends '_layout.html' %}
+
+{% block title %}Sign Up{% endblock %}
+
+{% block content %}
+<form method="post" enctype="multipart/form-data">
+    <input type="hidden" name="id" value="{{ result.id }}">
+    <input type="hidden" name="old_avatar" value="{{ result.avatar }}">
+    <label for="fn">First Name:</label>
+    <input id="fn" name="first_name" value="{{ result.first_name }}">
+    <br>
+    <label for="ln">Last Name:</label>
+    <input id="ln" name="last_name" value="{{ result.last_name }}">
+    <br>
+    <label for="email">Email:</label>
+    <input id="email" name="email" type="email" value="{{ result.email }}">
+    <br>
+    <label for="pass">Password:</label>
+    <input id="pass" name="password" type="password">
+    <i class="bi-eye-slash" id="eye" onclick="myFunction()"></i>
+    <br>
+    <label for="pic">Avatar:</label>
+    <input id="pic" name="avatar" type="file">
+    <br>
+    <img class="profile_img" src="{{ url_for('static', filename='images/' + (result.avatar or 'default.png')) }}" height="64">
+    <br>
+    <input type="submit" value="Update person">
+</form>
+<script>
+    let fileInput = document.querySelector('#pic');
+    let image = document.querySelector('.profile_img');
+
+    fileInput.addEventListener('change', updateImage);
+
+    function updateImage() {
+        image.src = URL.createObjectURL(fileInput.files[0]);
+    }
+</script>
+{% endblock %}
