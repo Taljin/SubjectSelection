@@ -8,7 +8,7 @@ app.register_blueprint(setup)
 
 @app.before_request
 def restrict():
-    restricted_pages = ['list_users', 'view_user', 'edit', 'delete']
+    restricted_pages = ['list_users', 'view_user', 'edit', 'delete', 'list_movies', 'borrow']
     if 'logged_in' not in session and request.endpoint in restricted_pages:
         flash("Please log in.")
         return redirect('/login')
@@ -228,6 +228,48 @@ def edit():
                 result = cursor.fetchone()
         return render_template('users_edit.html', result=result)
 
+# <== MOVIES ==>
+@app.route('/movies_list')
+def list_movies():
+    with create_connection() as connection:
+        with connection.cursor() as cursor:
+            cursor.execute("SELECT * FROM movies")
+            result = cursor.fetchall()
+    return render_template('movies_list.html', result=result)
+
+@app.route('/borrow_movie')
+def borrow():
+    with create_connection() as connection:
+        with connection.cursor() as cursor:
+            sql = """INSERT INTO movies_watched (userid, movieid)
+                VALUES (%s, %s)"""
+            values = (
+                session['id'],
+                request.args['id']
+                )
+            cursor.execute(sql, values)
+            connection.commit()
+    flash('Movie Borrowed.')
+    return redirect('/')
+
+@app.route('/movies_watched')
+def view_user_movies():
+    with create_connection() as connection:
+        with connection.cursor() as cursor:
+            sql = """SELECT
+	                    users.first_name, movies.title, movies.genre, movies.year_released 
+                    FROM
+	                    movies_watched
+	                    JOIN 
+		                    users ON movies_watched.userid = users.id
+	                    JOIN
+		                    movies ON movies_watched.movieid = movies.id
+	                    WHERE users.id = %s"""
+            values = (session['id'])
+            cursor.execute(sql, values)
+            result = cursor.fetchall()
+            connection.commit()
+    return render_template('movies_watched.html', result=result)
 
 if __name__ == '__main__':
     import os

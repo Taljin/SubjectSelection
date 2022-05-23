@@ -1,0 +1,29 @@
+{% extends '_layout.html' %}
+
+{% block title %}Home{% endblock %}
+
+{% block content %}
+
+<h1>{{ result[0].first_name }}</h1>
+<h3>Movies Watched:</h3>
+<table>
+    <thead>
+        <tr>
+            <th>Title</th>
+            <th>Genre</th>
+            <th>Year Released</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for row in result %}
+        <tr>
+            <td>{{ row.title }}</td>
+            <td>{{ row.genre }}</td>
+            <td>{{ row.year_released }}</td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+<br>
+<a href="{{ url_for('list_users') }}">Dashboard</a>
+{% endblock %}
