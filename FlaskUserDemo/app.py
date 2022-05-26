@@ -8,7 +8,7 @@ app.register_blueprint(setup)
 
 @app.before_request
 def restrict():
-    restricted_pages = ['list_users', 'view_user', 'edit', 'delete', 'list_movies', 'borrow']
+    restricted_pages = ['list_users', 'view_user', 'edit', 'delete', 'borrow', 'delete_movie', 'view_user_movies', 'view_all_user_movies']
     if 'logged_in' not in session and request.endpoint in restricted_pages:
         flash("Please log in.")
         return redirect('/login')
@@ -237,6 +237,29 @@ def list_movies():
             result = cursor.fetchall()
     return render_template('movies_list.html', result=result)
 
+@app.route('/delete_movie')
+def delete_movie():
+    if session['role'] != 'admin':
+        flash("Access Denied.")
+        return abort(404)
+    with create_connection() as connection:
+        with connection.cursor() as cursor:
+            sql = """DELETE FROM movies WHERE id = %s"""
+            values = (request.args['id'])
+            try:
+                cursor.execute(sql, values)
+                connection.commit()
+            except pymysql.err.IntegrityError:
+                sql = """DELETE FROM movies_watched WHERE movieid = %s"""
+                sql1 = """DELETE FROM movies WHERE id = %s"""
+                values = (request.args['id'])
+                values1 = (request.args['id'])
+                cursor.execute(sql, values)
+                cursor.execute(sql1, values1)
+                connection.commit()
+    flash("g̷̨̛̞͉̥̹͈̩̥̦͎̔͂̉̇̂̅̌̀͝o̷̢̡̲̠̟̪̻̬̝͙̥̫͍̥͗͌̈̔̋̂͐͋͛͊̌̈͆͝n̸͓̣͈͐ę̴͓͓̰̥̫̔̉")
+    return redirect('/')
+
 @app.route('/borrow_movie')
 def borrow():
     with create_connection() as connection:
@@ -247,8 +270,12 @@ def borrow():
                 session['id'],
                 request.args['id']
                 )
-            cursor.execute(sql, values)
-            connection.commit()
+            try:
+                cursor.execute(sql, values)
+                connection.commit()
+            except pymysql.err.IntegrityError:
+                flash('You already have this movie.')
+                return redirect('/movies_list')
     flash('Movie Borrowed.')
     return redirect('/')
 
@@ -264,12 +291,32 @@ def view_user_movies():
 		                    users ON movies_watched.userid = users.id
 	                    JOIN
 		                    movies ON movies_watched.movieid = movies.id
-	                    WHERE users.id = %s"""
+                        WHERE users.id = %s"""
             values = (session['id'])
             cursor.execute(sql, values)
             result = cursor.fetchall()
             connection.commit()
     return render_template('movies_watched.html', result=result)
+
+@app.route('/movies_watched_admin')
+def view_all_user_movies():
+    if session['role'] != 'admin':
+        flash("Access Denied.")
+        return abort(404)
+    with create_connection() as connection:
+        with connection.cursor() as cursor:
+            sql = """SELECT
+	                    users.id, users.first_name, users.last_name, movies.title, movies.genre, movies.year_released 
+                    FROM
+	                    movies_watched
+	                    JOIN 
+		                    users ON movies_watched.userid = users.id
+	                    JOIN
+		                    movies ON movies_watched.movieid = movies.id"""
+            cursor.execute(sql)
+            result = cursor.fetchall()
+            connection.commit()
+    return render_template('movies_watched_admin.html', result=result)
 
 if __name__ == '__main__':
     import os

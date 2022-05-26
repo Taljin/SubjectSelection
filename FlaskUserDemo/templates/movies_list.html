@@ -30,6 +30,14 @@
                     Trailer
                 </a>
             </td>
+            {% if session['role'] == 'admin' %}
+            <td>
+                <a href="/delete_movie?id={{ row.id }}"
+                   onclick="return confirm('Are you sure you wish to delete {{ row.title }}?')">
+                    Delete
+                </a>
+            </td>
+            {% endif %}
         </tr>
         {% endfor %}
     </tbody>

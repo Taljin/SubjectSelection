@@ -1,0 +1,33 @@
+{% extends '_layout.html' %}
+
+{% block title %}Home{% endblock %}
+
+{% block content %}
+
+<table>
+    <thead>
+        <tr>
+            <th>User ID</th>
+            <th>First Name</th>
+            <th>Last Name</th>
+            <th>Title</th>
+            <th>Genre</th>
+            <th>Year Released</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for row in result %}
+        <tr>
+            <td>{{ row.id }}</td>
+            <td>{{ row.first_name }}</td>
+            <td>{{ row.last_name }}</td>
+            <td>{{ row.title }}</td>
+            <td>{{ row.genre }}</td>
+            <td>{{ row.year_released }}</td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+<br>
+<a href="{{ url_for('list_users') }}">Dashboard</a>
+{% endblock %}

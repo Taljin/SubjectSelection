@@ -40,9 +40,9 @@
 
         if (json.status == 'OK') {
             message.style.color = 'green';
-            emailInput.setCustomValidity('hello world');
-            emailInput.validationMessage();
             message.textContent = 'Email is available';
+            emailInput.setCustomValidity('go back and log in peasant');
+            emailInput.validationMessage();
         } else {
             message.style.color = 'red';
             message.textContent = 'Email is taken';
