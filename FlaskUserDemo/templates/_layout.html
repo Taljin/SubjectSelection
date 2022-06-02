@@ -13,26 +13,43 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://unpkg.com/flickity@2/dist/flickity.min.css">
     <link rel="stylesheet" href="{{ url_for('static', filename='css/custom.css') }}">
 </head>
 <body>
     <nav>
-        {% if 'logged_in' in session %}
-        Welcome Mr/Mrs/Dr/Master/Miss/They/Them/She/Shim {{ session.first_name }}-san  <a href="/logout">Logout</a>
-        {% else %}
-        <a href="/login">Login</a>
-        <a href="{{ url_for('add_user') }}">Sign Up</a>
-        {% endif %}
+        <ul>
+            <li><a href="#home">Home</a></li>
+            <li><a href="#news">News</a></li>
+            <li><a href="#contact">Contact</a></li>
+            {% if 'logged_in' in session %}
+            <li style="float:right">
+                <a href="/logout" style="background: red">Logout</a>
+            </li>
+            <li style="float:right">
+                <a>Welcome Mr/Mrs/Dr/Master/Miss/They/Them/She/Shim {{ session.first_name }}</a>
+            </li>
+            {% else %}
+            <li style="float:right">
+                <a href="{{ url_for('add_user') }}" style="background: red">Sign Up</a>
+            </li>
+            <li style="float:right">
+                <a href="/login">Login</a>
+            </li>
+            {% endif %}
+        </ul>
+        
     </nav>
     <br>
     {% block content %}{% endblock %}
 
     <footer>
-            {% for message in get_flashed_messages() %}
-            <aside>{{ message }}</aside>
-            {% endfor %}
+        {% for message in get_flashed_messages() %}
+        <aside>{{ message }}</aside>
+        {% endfor %}
     </footer>
 
+    <script src="https://unpkg.com/flickity@2/dist/flickity.pkgd.min.js"></script>
     <script>
         function myFunction() {
             var x = document.getElementById("pass");

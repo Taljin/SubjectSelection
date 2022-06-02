@@ -3,6 +3,15 @@
 {% block title %}Home{% endblock %}
 
 {% block content %}
+<!-- Flickity HTML init -->
+<div class="gallery js-flickity"
+     data-flickity-options='{ "wrapAround": true }'>
+    <div class="gallery-cell"></div>
+    <div class="gallery-cell"></div>
+    <div class="gallery-cell"></div>
+    <div class="gallery-cell"></div>
+</div>
+
 <h1>hellow</h1>
 
 {% if 'logged_in' in session %}
@@ -15,7 +24,6 @@
 {% if session['role'] == 'admin' %}
 <a href="{{ url_for('list_users') }}">Dashboard</a>
 {% endif %}
-
+<br>
 <a href="{{ url_for('list_movies') }}">Movies</a>
-
 {% endblock %}

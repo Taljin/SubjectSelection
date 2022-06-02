@@ -42,5 +42,14 @@
         {% endfor %}
     </tbody>
 </table>
+<br>
+{% if 'logged_in' in session %}
+<a href="{{ url_for('view_user_movies') }}">View your Movies</a>
+{% endif %}
+<br>
+<br>
+{% if session['role'] == 'admin' %}
+<a href="{{ url_for('view_all_user_movies') }}">View EVERYONES Movies</a>
+{% endif %}
 
 {% endblock %}
