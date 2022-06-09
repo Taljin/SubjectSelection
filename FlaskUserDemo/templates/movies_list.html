@@ -7,18 +7,18 @@
 <table>
     <thead>
         <tr>
-            <th>Title</th>
-            <th>Genre</th>
-            <th>Year Released</th>
+            <th>Name</th>
+            <th>HOF</th>
+            <th>Year Level</th>
             <th colspan="3">Actions</th>
         </tr>
     </thead>
     <tbody>
         {% for row in result %}
         <tr>
-            <td>{{ row.title }}</td>
-            <td>{{ row.genre }}</td>
-            <td>{{ row.year_released }}</td>
+            <td>{{ row.name }}</td>
+            <td>{{ row.HOF }}</td>
+            <td>{{ row.year_level }}</td>
             <td>
                 <a href="/borrow_movie?id={{ row.id }}"
                    onclick="return confirm('Borrow the film: {{ row.title }}?')">
@@ -44,12 +44,12 @@
 </table>
 <br>
 {% if 'logged_in' in session %}
-<a href="{{ url_for('view_user_movies') }}">View your Movies</a>
+<a href="{{ url_for('view_user_movies') }}">View your Subjects</a>
 {% endif %}
 <br>
 <br>
 {% if session['role'] == 'admin' %}
-<a href="{{ url_for('view_all_user_movies') }}">View EVERYONES Movies</a>
+<a href="{{ url_for('view_all_user_movies') }}">View EVERYONES Subjects</a>
 {% endif %}
 
 {% endblock %}

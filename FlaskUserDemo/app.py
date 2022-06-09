@@ -17,6 +17,7 @@ def restrict():
 def home():
     return render_template('index.html')
 
+
 @app.route('/login', methods=['GET', 'POST'])
 def login():
     if request.method == 'POST':
@@ -44,6 +45,7 @@ def login():
         else:
             messages = ['Invalid username or password.', 'you cannot', 'Try again in !̶̡̽͆@̷̬̠̹̔#̸̝͖̝͝E̷̤̊͒͠Ŗ̵̗͐͝R̶̨̉Ō̵̤͗R̶͕̩̆#̵̡̩̹͐@̴̯̾!̷͇̒͂͠ seconds.', 'Pro Tip: Type the CORRECT username and password.', 'ẽ̵̡̛̞̤̠͙̘̖̑͗̐̍̾͑̒̄́͗͆͗͒͒̚͝ͅͅv̵̡̗͈́̀̾̄̌̋̿̎̎̅̀̏̌͝ȩ̵̛̛̺͖͍̥̞̣͓̭̫͎̱̦͉͍̣̮̝̩̍̅͝r̷̛̳͇̥̙͍̫͉͉̠͓̙̼͎͉̻̪̹̮̻̰̣̦͎̠̓̂͌͐̏̑̋̄̾̏̉͆͐̓̐͋͛̈͂̄͐̚̕̕̚ý̸̡̘̳̊̀͋̓̆̋̚ ̴̧̨͔̙͕̻͕̮̬̮̯̼̗͖̩͋͂̊̏̆̏͗͂̃̔̌̊̉̓̂̋͂̑̒̉͆̈̈́͘̚͘͜͠ͅş̸̡̛̼̗̙̳͔͔̺̩͕̖̭̱̰̥̹͚̲͈̺͔͕̲͎͕͗̊ͅẽ̷̛̛̤͍̯̬̝̺͉͈̜̝͓̘̖̤͈̬͈̄̓̅͜c̴̡̡̛̛̛͇̺̙͉͓͙͇͙̹͕͈̥̏͆̄̀̾̄̊̏͒̾̅́̈͆̋͘͜͠͝͝o̶̧̪̟̣̺̜̺͇̣̫͍͗̑͝ͅń̶̡̛̛͔̱̫͖̞͕͚̺̪̗̰̜͚̙̪̫̥͇̲̳͙̠̱̪͇̇͗̀͊̑̌̆̃̈̾̂̚͘̚̕ͅd̸̛̤̟̝̺͇͉̥̯͚͖̠̯̑̅̎̾͒̎̍̈́̔̒̂͛̽͛̅̊͛̾̊̉̕̚͝͝͠ ̷̛̦͔͓̰͕̰͚̭̦̗̮̠̙̫̝͎̟̱̘͔̥͖͈̥͖̣̓̂̀͂̌̂̀̃̊͛́̈͗̄̌͊̃̌̓̀͊͘̚͝y̸̨͖͖̝͙̗̬̝͕͙͗̿́̀̐͂̇̃̽̈́̑̋͘͘̚͘͘ö̸̢̺̝̣̮̬̮͓͚͍̥̰̮̲͚͉̥́́́̈́ư̸̟̤̣͓̪̜͖̗̇̇́̎̀͛̉̔͗̄͐͆͛̈̋̓̋̽͘͘͠͠ ̸̡̦͕̯̣̀͊̈́̂̓̈́̎͜͝á̵̛̜͉̱̲͎̼̘̥͔̖͕̠̳̟̰̺̯͕̯̼͊͐́͐̓͛̇̆̇̏̽͋̇͆̈́͑͊͑̆̈́̑̚͘͝͝ŗ̴̢̡̧̮̫̩̦̹̱̖̮͈̠̳͕̝̟͇͔͐̾̓̌̒̋̀̈́̈́̔̄ͅḛ̶̡̧̛̠͔̟͖͎̯̯̟̩͇̘̜͔̹̼̖̥̳̈́͂͐͂͊͛̍̆̀̒̅͌͗̿̂͌̀̃̆͘͠͝ ̴̛̞̣̭̪͙̤͕͕̠̣̮̖̲͙͓͈̠͔͙̝̇̃̂̐̀̆̂̽͗̈́̐͘͘̚͠ͅn̷̤̼̹̟̟̓̈́́͋̈́͂̈̈́̎̅̋̈͑͐͐͘͠ợ̷̣͛̉͛͂̌͊̂̉̂̀̐̈́́͛̂̄̕̕͝͝͝͝t̴̛̟͖͚̹̖̺̺͍͓̅͂̑̈́̂̏̒͂̅̊́͊̋̽̓̈́̇̀͘͘ ̴̢̢̮̪̤̩̞̤͈̯̪̘̦̯̫̲̼̪͚̲͍͖͔̗͒̕r̶̢̧̨̭̝͔̝̬̲͖̮͍̜̣͙̻͉̫̱̲̻͔͕̹̗͍̖̓̀̈́̍̈́͗͋͌̀̓́͠ǘ̷͍̰̺͕̹̱̤̰̮̎̈͗̎̔̂͂͠ņ̸̨̬̘̝̝͚̠̼̺͎̹̗̗̪͕͉̱̭̱̝̱͓͈̝̈́͗̃̃̏̌͜͝ņ̴͉͙̖̮̖̻̮͇̘̰͖̙̮̆̔͛̊̃̈́̎̅͒̒͛͘͝͝͠i̵̦͓̭̭͗̈́͛͌͌͌̐͐̀̂͒̏̎̓́̈́͐̆̂͆͆͑̐̕͝ņ̷̧̢̛̣̗͔̮̬̠̱̲͖̩͎̬͙̻̰̖͓̯̯͌̓̎̓̄̌̔̀̐͘͜g̴̨̛̛̝̣̫̝͓̼̘͍̜̬̝̻̜̟̳̹̭̞̍͂̀͐͒̄̐͜ͅ,̴̛̭̝̎̋̂̔̓͗̆̌͊̀͌ͅ ̷̨̧̢̭̘̰͙̟̳̭̫̯̟̗͚̣̺̘̂̒̈́̈͋̎̈̈́́͌̿̿̈͛̑̈́̓͝͝ỉ̶̢̧̡̧̛͉͉͉̻̜͔͇̲͕͍̙̺̱͖͔̙̺̓̓̓͑͐̎̀͜͝͝ͅͅ ̶̨͎̞͎̫̘̖̮̰͒̊̊̂̿̍̊͘ā̶̧̢͇͉̙͍̩̳̦̟̬̟̟̝̦̹̟͈̗͇̦͍̺̓̔̍̏̈́̔͘͘͝m̶̡̢̭̫̟͖̻̩͍̥̞̹̞͉͚̫̪̲̦̭̗͈͈͐͐̄́̋͗͆͊̏̔̈͌̆̋̂̂͛͛̀̿͋̂͘͝͠ͅ ̷̢̢̳͍̫̀̐̈́̈́͌̅͂̔̈́͌̀̈́̌̽̋̈́̀͐͌̀͜ͅḡ̶̨̧̢̡̤͇̪̠͙̭̙̟̹̭̼̖̠͈̳̪̳͙̰̻̘͎̰͋̂̃̓̃̾̚͠͝e̴̹̗̓̍̋̔̈́͌̇͑̓͊̒̋̋̈́̽̔̽͝͝ͅṫ̴̢̼̬̺̣̭͓̤̞͙̒͛͋͐̏̓̌͋̌͂́̿͜͝ͅt̶̢̧̻͉̥͓̹̹̫͈̻̻͔̹̲̜͊̈́̾̊̾̐̏̐͗̎̿̔̈̅͗̊̉̓͂̚͜͜͠ͅͅì̵̡̡̨͎̝͍͇̮̦̖̜̙̰̞̱̮͚̔̃̀͆̍̅͜ͅṉ̶̯͚̞͙͚̣͊̈́͜͝g̷̨͖̼̹̟̘͓̣̻̫̱̤̎͋̉̂̋͌̆͛̎̿͗̈́͗̑͜͝͝ ̶̨̨̛̬̖̟̝̼̗̖͕̭̀̿̍́̏̑̋͒́̈́́̔̓̀̃̊̎́́͗̕͜ͅc̶̡̧̡̡̛̤͉̺̯̙͚̱̘͇̟̮̳̮͔͓̦̄̓̿̀̇͆̆́͑̓̈́̌̑̀̊̀̒͘̚̚̕͜͜͝͝͝l̸̛̛͔̐̿̀̈́͌̎͑̋̇̋̓͆̎͗̀̄͝͝o̸̧̢̧͕̥̮̯̥̹͕̼̮̗̪͊̌͊͜ͅs̷͔͖̼̳̪̪̭͓͓͈̩̻͔̦͆̊̉̕͝ę̶̛̩̟̹̩̪͍͕͙̰̙̖̯̫̟̥̯͚̫͓̤̹̥͕́̏͋̐͆̉̇̾͑̿̆̌̃̅̃̅͑̆́̕̚͜͠ͅŗ̸̡̜̰̮̫̦̱͙̰͓͔̱̺̭̟̐̽̉͂̊̒̉̎͆̔̒́̈́̓̚̕̚']
             flash (messages[random.randint(0,4)])
+            session['id'] = 0
             return redirect('/login')            
     else:
         return render_template('login.html')
@@ -233,7 +235,7 @@ def edit():
 def list_movies():
     with create_connection() as connection:
         with connection.cursor() as cursor:
-            cursor.execute("SELECT * FROM movies")
+            cursor.execute("SELECT * FROM subjects")
             result = cursor.fetchall()
     return render_template('movies_list.html', result=result)
 
@@ -244,14 +246,14 @@ def delete_movie():
         return abort(404)
     with create_connection() as connection:
         with connection.cursor() as cursor:
-            sql = """DELETE FROM movies WHERE id = %s"""
+            sql = """DELETE FROM subjects WHERE id = %s"""
             values = (request.args['id'])
             try:
                 cursor.execute(sql, values)
                 connection.commit()
             except pymysql.err.IntegrityError:
-                sql = """DELETE FROM movies_watched WHERE movieid = %s"""
-                sql1 = """DELETE FROM movies WHERE id = %s"""
+                sql = """DELETE FROM student_subjects WHERE subjectid = %s"""
+                sql1 = """DELETE FROM subjects WHERE id = %s"""
                 values = (request.args['id'])
                 values1 = (request.args['id'])
                 cursor.execute(sql, values)
@@ -264,7 +266,7 @@ def delete_movie():
 def borrow():
     with create_connection() as connection:
         with connection.cursor() as cursor:
-            sql = """INSERT INTO movies_watched (userid, movieid)
+            sql = """INSERT INTO student_subjects (userid, subjectid)
                 VALUES (%s, %s)"""
             values = (
                 session['id'],
@@ -284,13 +286,13 @@ def view_user_movies():
     with create_connection() as connection:
         with connection.cursor() as cursor:
             sql = """SELECT
-	                    users.first_name, movies.title, movies.genre, movies.year_released 
+	                    users.first_name, subjects.name, subjects.HOF, subjects.year_level 
                     FROM
-	                    movies_watched
+	                    student_subjects
 	                    JOIN 
-		                    users ON movies_watched.userid = users.id
+		                    users ON student_subjects.userid = users.id
 	                    JOIN
-		                    movies ON movies_watched.movieid = movies.id
+		                    subjects ON student_subjects.subjectid = subjects.id
                         WHERE users.id = %s"""
             values = (session['id'])
             cursor.execute(sql, values)
@@ -306,13 +308,13 @@ def view_all_user_movies():
     with create_connection() as connection:
         with connection.cursor() as cursor:
             sql = """SELECT
-	                    users.id, users.first_name, users.last_name, movies.title, movies.genre, movies.year_released 
+	                    users.id, users.first_name, users.last_name, subjects.name, subjects.HOF, subjects.year_level 
                     FROM
-	                    movies_watched
+	                    student_subjects
 	                    JOIN 
-		                    users ON movies_watched.userid = users.id
+		                    users ON student_subjects.userid = users.id
 	                    JOIN
-		                    movies ON movies_watched.movieid = movies.id"""
+		                    subjects ON student_subjects.subjectid = subjects.id"""
             cursor.execute(sql)
             result = cursor.fetchall()
             connection.commit()

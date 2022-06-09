@@ -9,17 +9,17 @@
 <table>
     <thead>
         <tr>
-            <th>Title</th>
-            <th>Genre</th>
-            <th>Year Released</th>
+            <th>Name</th>
+            <th>HOF</th>
+            <th>Year Level</th>
         </tr>
     </thead>
     <tbody>
         {% for row in result %}
         <tr>
-            <td>{{ row.title }}</td>
-            <td>{{ row.genre }}</td>
-            <td>{{ row.year_released }}</td>
+            <td>{{ row.name }}</td>
+            <td>{{ row.HOF }}</td>
+            <td>{{ row.year_level }}</td>
         </tr>
         {% endfor %}
     </tbody>

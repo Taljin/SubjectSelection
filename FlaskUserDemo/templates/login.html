@@ -14,7 +14,15 @@
         <i class="bi-eye-slash" id="eye" onclick="myFunction()"></i>
         <br>
         <br>
-        <input class="submit "type="submit" value="Login">
+        <input class="submit " type="submit" value="Login">
+
+        {% if session['id'] == 0 %}
+        <a href="/">
+            Signup
+        </a>
+        {% endif %}
+
     </form>
 </div>
+
     {% endblock %}
