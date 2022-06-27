@@ -5,13 +5,14 @@
 {% block content %}
 
 <h1>{{ result[0].first_name }}</h1>
-<h3>Movies Watched:</h3>
+<h3>Subjects Selected:</h3>
 <table>
     <thead>
         <tr>
             <th>Name</th>
             <th>HOF</th>
-            <th>Year Level</th>
+            <th>Faculty</th>
+            <th colspan="3">Actions</th>
         </tr>
     </thead>
     <tbody>
@@ -19,7 +20,13 @@
         <tr>
             <td>{{ row.name }}</td>
             <td>{{ row.HOF }}</td>
-            <td>{{ row.year_level }}</td>
+            <td>{{ row.faculty }}</td>
+            <td>
+                <a href="/deselect_subject?id={{ row.id }}"
+                   onclick="return confirm('Are you sure you wish to remove {{ row.name }} from your selection?')">
+                    Remove
+                </a>
+            </td>
         </tr>
         {% endfor %}
     </tbody>

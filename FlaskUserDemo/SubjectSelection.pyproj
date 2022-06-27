@@ -39,9 +39,9 @@
     <Content Include="static\images\default.png" />
     <Content Include="templates\index.html" />
     <Content Include="templates\login.html" />
-    <Content Include="templates\movies_list.html" />
-    <Content Include="templates\movies_watched_admin.html" />
-    <Content Include="templates\movies_watched.html" />
+    <Content Include="templates\subjects_list.html" />
+    <Content Include="templates\subjects_selected_admin.html" />
+    <Content Include="templates\subjects_selected.html" />
     <Content Include="templates\setup.html" />
     <Content Include="templates\users_add.html" />
     <Content Include="templates\users_edit.html" />

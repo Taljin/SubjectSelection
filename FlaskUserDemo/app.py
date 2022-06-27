@@ -230,17 +230,17 @@ def edit():
                 result = cursor.fetchone()
         return render_template('users_edit.html', result=result)
 
-# <== MOVIES ==>
-@app.route('/movies_list')
-def list_movies():
+# <== SUBJECTS ==>
+@app.route('/subjects_list')
+def list_subjects():
     with create_connection() as connection:
         with connection.cursor() as cursor:
             cursor.execute("SELECT * FROM subjects")
             result = cursor.fetchall()
-    return render_template('movies_list.html', result=result)
+    return render_template('subjects_list.html', result=result)
 
-@app.route('/delete_movie')
-def delete_movie():
+@app.route('/delete_subject')
+def delete_subject():
     if session['role'] != 'admin':
         flash("Access Denied.")
         return abort(404)
@@ -262,31 +262,64 @@ def delete_movie():
     flash("g̷̨̛̞͉̥̹͈̩̥̦͎̔͂̉̇̂̅̌̀͝o̷̢̡̲̠̟̪̻̬̝͙̥̫͍̥͗͌̈̔̋̂͐͋͛͊̌̈͆͝n̸͓̣͈͐ę̴͓͓̰̥̫̔̉")
     return redirect('/')
 
-@app.route('/borrow_movie')
-def borrow():
-    with create_connection() as connection:
-        with connection.cursor() as cursor:
-            sql = """INSERT INTO student_subjects (userid, subjectid)
-                VALUES (%s, %s)"""
-            values = (
-                session['id'],
-                request.args['id']
-                )
-            try:
-                cursor.execute(sql, values)
-                connection.commit()
-            except pymysql.err.IntegrityError:
-                flash('You already have this movie.')
-                return redirect('/movies_list')
-    flash('Movie Borrowed.')
-    return redirect('/')
-
-@app.route('/movies_watched')
-def view_user_movies():
+@app.route('/select_subject')
+def select():
     with create_connection() as connection:
         with connection.cursor() as cursor:
             sql = """SELECT
-	                    users.first_name, subjects.name, subjects.HOF, subjects.year_level 
+	                    users.first_name, subjects.name 
+                    FROM
+	                    student_subjects
+	                    JOIN 
+		                    users ON student_subjects.userid = users.id
+	                    JOIN
+		                    subjects ON student_subjects.subjectid = subjects.id
+                        WHERE users.id = %s"""
+            values = (session['id'])
+            cursor.execute(sql, values)
+            result = cursor.fetchall()
+            if len(result) < 5:
+                sql = """INSERT INTO student_subjects (userid, subjectid)
+                    VALUES (%s, %s)"""
+                values = (
+                    session['id'],
+                    request.args['id']
+                    )
+                try:
+                    cursor.execute(sql, values)
+                    connection.commit()
+                except pymysql.err.IntegrityError:
+                    flash('You have already chosen this subject.')
+                    return redirect('/subjects_list')
+            else:
+                flash('You already have 5 subjects. Edit your profile to remove a subject first.')
+                return redirect('/subjects_list')
+    flash('Subject selected.')
+    return redirect('/')
+
+@app.route('/deselect_subject')
+def deselect():
+    if str(session['id']) != request.args['id']:
+        flash("Access Denied.")
+        return abort(404)
+    with create_connection() as connection:
+        with connection.cursor() as cursor:
+            sql = """DELETE FROM student_subjects WHERE subjectid = %s AND userid = %s"""
+            values = (
+                request.args['id'], 
+                session['id']
+                      )
+            cursor.execute(sql, values)
+            connection.commit()
+    flash("g̷̨̛̞͉̥̹͈̩̥̦͎̔͂̉̇̂̅̌̀͝o̷̢̡̲̠̟̪̻̬̝͙̥̫͍̥͗͌̈̔̋̂͐͋͛͊̌̈͆͝n̸͓̣͈͐ę̴͓͓̰̥̫̔̉")
+    return redirect('/')
+
+@app.route('/subjects_selected')
+def view_user_subjects():
+    with create_connection() as connection:
+        with connection.cursor() as cursor:
+            sql = """SELECT
+	                    users.first_name, subjects.name, subjects.HOF, subjects.faculty 
                     FROM
 	                    student_subjects
 	                    JOIN 
@@ -298,17 +331,17 @@ def view_user_movies():
             cursor.execute(sql, values)
             result = cursor.fetchall()
             connection.commit()
-    return render_template('movies_watched.html', result=result)
+    return render_template('subjects_selected.html', result=result)
 
-@app.route('/movies_watched_admin')
-def view_all_user_movies():
+@app.route('/subjects_selected_admin')
+def view_all_user_subjects():
     if session['role'] != 'admin':
         flash("Access Denied.")
         return abort(404)
     with create_connection() as connection:
         with connection.cursor() as cursor:
             sql = """SELECT
-	                    users.id, users.first_name, users.last_name, subjects.name, subjects.HOF, subjects.year_level 
+	                    users.id, users.first_name, users.last_name, subjects.name, subjects.HOF, users.year_level 
                     FROM
 	                    student_subjects
 	                    JOIN 
@@ -318,7 +351,7 @@ def view_all_user_movies():
             cursor.execute(sql)
             result = cursor.fetchall()
             connection.commit()
-    return render_template('movies_watched_admin.html', result=result)
+    return render_template('subjects_selected_admin.html', result=result)
 
 if __name__ == '__main__':
     import os
