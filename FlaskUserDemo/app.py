@@ -6,6 +6,7 @@ app = Flask(__name__)
 from utils import create_connection, setup
 app.register_blueprint(setup)
 
+# Restrict users from accessing pages without being logged in
 @app.before_request
 def restrict():
     restricted_pages = ['list_users', 'view_user', 'edit', 'delete', 'borrow', 'delete_movie', 'view_user_movies', 'view_all_user_movies']
@@ -13,11 +14,12 @@ def restrict():
         flash("Please log in.")
         return redirect('/login')
 
+# Home page
 @app.route('/')
 def home():
     return render_template('index.html')
 
-
+# User log in
 @app.route('/login', methods=['GET', 'POST'])
 def login():
     if request.method == 'POST':
@@ -50,13 +52,14 @@ def login():
     else:
         return render_template('login.html')
 
+# User log out
 @app.route('/logout')
 def logout():
     session.clear()
     flash("You have logged out.")
     return redirect('/')
 
-# TODO: Add a '/register' (add_user) route that uses INSERT
+# Register a new user - add new user to the database
 @app.route('/register', methods=['GET', 'POST'])
 def add_user():
     if request.method == 'POST':
@@ -110,6 +113,7 @@ def add_user():
             return redirect('/')
     return render_template('users_add.html')
 
+# Checks if email has already been used
 @app.route('/checkemail')
 def check_email():
     with create_connection() as connection:
@@ -124,7 +128,7 @@ def check_email():
     else:
         return jsonify({ 'status': 'OK' })
 
-# TODO: Add a '/dashboard' (list_users) route that uses SELECT
+# Admin - show all the users in the database
 @app.route('/dashboard')
 def list_users():
     if session['role'] != 'admin':
@@ -136,7 +140,7 @@ def list_users():
             result = cursor.fetchall()
     return render_template('users_list.html', result=result)
 
-# TODO: Add a '/profile' (view_user) route that uses SELECT
+# View user details
 @app.route('/profile')
 def view_user():
     with create_connection() as connection:
@@ -148,7 +152,7 @@ def view_user():
             connection.commit()
     return render_template('users_profile.html', result=result)
 
-# TODO: Add a '/delete_user' route that uses DELETE
+# Delete a user from the database
 @app.route('/delete_user')
 def delete():
     if session['role'] != 'admin' and str(session['id']) != request.args['id']:
@@ -163,7 +167,7 @@ def delete():
     flash("g̷̨̛̞͉̥̹͈̩̥̦͎̔͂̉̇̂̅̌̀͝o̷̢̡̲̠̟̪̻̬̝͙̥̫͍̥͗͌̈̔̋̂͐͋͛͊̌̈͆͝n̸͓̣͈͐ę̴͓͓̰̥̫̔̉")
     return redirect('/')
 
-# TODO: Add an '/edit_user' route that uses UPDATE
+# Change the details of a user
 @app.route('/edit_user', methods=['GET', 'POST'])
 def edit():
     if session['role'] != 'admin' and str(session['id']) != request.args['id']:
@@ -231,6 +235,8 @@ def edit():
         return render_template('users_edit.html', result=result)
 
 # <== SUBJECTS ==>
+
+# Show all available subjects
 @app.route('/subjects_list')
 def list_subjects():
     with create_connection() as connection:
@@ -239,6 +245,7 @@ def list_subjects():
             result = cursor.fetchall()
     return render_template('subjects_list.html', result=result)
 
+# Delete a subject from the database
 @app.route('/delete_subject')
 def delete_subject():
     if session['role'] != 'admin':
@@ -262,6 +269,7 @@ def delete_subject():
     flash("g̷̨̛̞͉̥̹͈̩̥̦͎̔͂̉̇̂̅̌̀͝o̷̢̡̲̠̟̪̻̬̝͙̥̫͍̥͗͌̈̔̋̂͐͋͛͊̌̈͆͝n̸͓̣͈͐ę̴͓͓̰̥̫̔̉")
     return redirect('/')
 
+# Select a subject for yourself - Max 5 subjects per user
 @app.route('/select_subject')
 def select():
     with create_connection() as connection:
@@ -297,11 +305,9 @@ def select():
     flash('Subject selected.')
     return redirect('/')
 
+# Remove a subject from your selection
 @app.route('/deselect_subject')
 def deselect():
-    if str(session['id']) != request.args['id']:
-        flash("Access Denied.")
-        return abort(404)
     with create_connection() as connection:
         with connection.cursor() as cursor:
             sql = """DELETE FROM student_subjects WHERE subjectid = %s AND userid = %s"""
@@ -314,12 +320,13 @@ def deselect():
     flash("g̷̨̛̞͉̥̹͈̩̥̦͎̔͂̉̇̂̅̌̀͝o̷̢̡̲̠̟̪̻̬̝͙̥̫͍̥͗͌̈̔̋̂͐͋͛͊̌̈͆͝n̸͓̣͈͐ę̴͓͓̰̥̫̔̉")
     return redirect('/')
 
+# Show your selected subjects
 @app.route('/subjects_selected')
 def view_user_subjects():
     with create_connection() as connection:
         with connection.cursor() as cursor:
             sql = """SELECT
-	                    users.first_name, subjects.name, subjects.HOF, subjects.faculty 
+	                    users.first_name, subjects.name, subjects.HOF, subjects.faculty, subjects.id 
                     FROM
 	                    student_subjects
 	                    JOIN 
@@ -327,12 +334,13 @@ def view_user_subjects():
 	                    JOIN
 		                    subjects ON student_subjects.subjectid = subjects.id
                         WHERE users.id = %s"""
-            values = (session['id'])
+            values = (request.args['id'])
             cursor.execute(sql, values)
             result = cursor.fetchall()
             connection.commit()
     return render_template('subjects_selected.html', result=result)
 
+# Show all students and their classes
 @app.route('/subjects_selected_admin')
 def view_all_user_subjects():
     if session['role'] != 'admin':
@@ -347,7 +355,8 @@ def view_all_user_subjects():
 	                    JOIN 
 		                    users ON student_subjects.userid = users.id
 	                    JOIN
-		                    subjects ON student_subjects.subjectid = subjects.id"""
+		                    subjects ON student_subjects.subjectid = subjects.id
+                        ORDER BY users.id"""
             cursor.execute(sql)
             result = cursor.fetchall()
             connection.commit()

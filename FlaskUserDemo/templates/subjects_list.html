@@ -44,7 +44,7 @@
 </table>
 <br>
 {% if 'logged_in' in session %}
-<a href="{{ url_for('view_user_subjects') }}">View your Subjects</a>
+<a href="{{ url_for('view_user_subjects', id=session['id']) }}">View your Subjects</a>
 {% endif %}
 <br>
 <br>
