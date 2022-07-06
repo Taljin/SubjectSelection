@@ -7,17 +7,17 @@
     <form method="post" enctype="multipart/form-data">
         <h1>Register</h1>
         <label for="fn">First Name:</label><br>
-        <input id="fn" name="first_name">
+        <input id="fn" name="first_name" required>
         <br>
         <label for="ln">Last Name:</label><br>
-        <input id="ln" name="last_name">
+        <input id="ln" name="last_name" required>
         <br>
         <p id="message" style="color: red"></p>
         <label for="email">Email:</label><br>
-        <input id="email" name="email" type="email">
+        <input id="email" name="email" type="email" required>
         <br>
         <label for="pass">Password:</label><br>
-        <input id="pass" name="password" type="password">
+        <input id="pass" name="password" type="password" required>
         <i class="bi-eye-slash" id="eye" onclick="myFunction()"></i>
         <br>
         <label for="pic">Avatar:</label><br>

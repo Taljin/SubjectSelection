@@ -1,5 +1,6 @@
 import pymysql, uuid, os, hashlib, random
 from flask import Flask, render_template, request, redirect, url_for, session, abort, flash, jsonify
+from datetime import date, datetime
 app = Flask(__name__)
 
 # Register the setup page and import create_connection()
@@ -95,6 +96,14 @@ def add_user():
                 except pymysql.err.IntegrityError:
                     flash ("An account with that email is already in use. Try logging in.")
                     return redirect('/register')
+
+                #try:
+                #    cursor.execute(sql, values)
+                #    result = cursor.fetchone()
+                #    connection.commit()
+                #except pymysql.err.DataError:
+                #    flash ("Text fields cannot exceed 255 characters. Please use shorter lengths.")
+                #    return redirect('/register')
 
                 sql = """SELECT * FROM users WHERE email = %s AND password = %s"""
                 values = (
@@ -272,38 +281,47 @@ def delete_subject():
 # Select a subject for yourself - Max 5 subjects per user
 @app.route('/select_subject')
 def select():
-    with create_connection() as connection:
-        with connection.cursor() as cursor:
-            sql = """SELECT
-	                    users.first_name, subjects.name 
-                    FROM
-	                    student_subjects
-	                    JOIN 
-		                    users ON student_subjects.userid = users.id
-	                    JOIN
-		                    subjects ON student_subjects.subjectid = subjects.id
-                        WHERE users.id = %s"""
-            values = (session['id'])
-            cursor.execute(sql, values)
-            result = cursor.fetchall()
-            if len(result) < 5:
-                sql = """INSERT INTO student_subjects (userid, subjectid)
-                    VALUES (%s, %s)"""
-                values = (
-                    session['id'],
-                    request.args['id']
-                    )
-                try:
-                    cursor.execute(sql, values)
-                    connection.commit()
-                except pymysql.err.IntegrityError:
-                    flash('You have already chosen this subject.')
+    datenow = datetime.now()
+    duedate = datetime(2022,7,12, 11,59,59)
+    startdate = datetime(2022,7,6)
+    if datenow > duedate or datenow < startdate:
+        flash('The subject selection period has ended. If you need to add a subject, please notify your teacher.')
+        return redirect('/subjects_list')
+    else:
+        with create_connection() as connection:
+            with connection.cursor() as cursor:
+                sql = """SELECT
+	                        users.first_name, subjects.name 
+                        FROM
+	                        student_subjects
+	                        JOIN 
+		                        users ON student_subjects.userid = users.id
+	                        JOIN
+		                        subjects ON student_subjects.subjectid = subjects.id
+                            WHERE users.id = %s"""
+                values = (session['id'])
+                cursor.execute(sql, values)
+                result = cursor.fetchall()
+                if len(result) < 5:
+                    sql = """INSERT INTO student_subjects (userid, subjectid)
+                        VALUES (%s, %s)"""
+                    values = (
+                        session['id'],
+                        request.args['id']
+                        )
+                    try:
+                        cursor.execute(sql, values)
+                        connection.commit()
+                    except pymysql.err.IntegrityError:
+                        flash('You have already chosen this subject.')
+                        return redirect('/subjects_list')
+                else:
+                    flash('You already have 5 subjects. Edit your profile to remove a subject first.')
                     return redirect('/subjects_list')
-            else:
-                flash('You already have 5 subjects. Edit your profile to remove a subject first.')
-                return redirect('/subjects_list')
-    flash('Subject selected.')
-    return redirect('/')
+        flash('Subject selected.')
+        return redirect('/')
+
+
 
 # Remove a subject from your selection
 @app.route('/deselect_subject')
@@ -323,6 +341,10 @@ def deselect():
 # Show your selected subjects
 @app.route('/subjects_selected')
 def view_user_subjects():
+    if session['role'] != 'admin' and str(session['id']) != request.args['id']:
+        flash("Access Denied.")
+        return abort(404)
+
     with create_connection() as connection:
         with connection.cursor() as cursor:
             sql = """SELECT
@@ -337,8 +359,11 @@ def view_user_subjects():
             values = (request.args['id'])
             cursor.execute(sql, values)
             result = cursor.fetchall()
+            sql2 = "SELECT * FROM users WHERE id = %s"
+            cursor.execute(sql2, values)
+            result2 = cursor.fetchone()
             connection.commit()
-    return render_template('subjects_selected.html', result=result)
+    return render_template('subjects_selected.html', result=result, result2=result2)
 
 # Show all students and their classes
 @app.route('/subjects_selected_admin')
