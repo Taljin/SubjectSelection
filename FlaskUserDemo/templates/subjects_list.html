@@ -10,7 +10,7 @@
             <th>Name</th>
             <th>HOF</th>
             <th>Year Level</th>
-            <th colspan="3">Actions</th>
+            <th colspan="4">Actions</th>
         </tr>
     </thead>
     <tbody>
@@ -26,7 +26,7 @@
                 </a>
             </td>
             <td>
-                <a href="https://www.youtube.com/watch?v=j64oZLF443g" target="_blank">
+                <a href="/subject_info?id={{ row.id }}">
                     Info
                 </a>
             </td>
@@ -35,6 +35,11 @@
                 <a href="/delete_subject?id={{ row.id }}"
                    onclick="return confirm('Are you sure you wish to delete {{ row.name }}? (This cannot be undone.)')">
                     Delete
+                </a>
+            </td>
+            <td>
+                <a href="/edit_subject?id={{ row.id }}">
+                    Edit
                 </a>
             </td>
             {% endif %}
@@ -50,6 +55,9 @@
 <br>
 {% if session['role'] == 'admin' %}
 <a href="{{ url_for('view_all_user_subjects') }}">View EVERYONES Subjects</a>
+<br>
+<br>
+<a href="{{ url_for('add_subject') }}">Add a subject</a>
 {% endif %}
 
 {% endblock %}

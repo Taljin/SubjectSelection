@@ -10,7 +10,7 @@ app.register_blueprint(setup)
 # Restrict users from accessing pages without being logged in
 @app.before_request
 def restrict():
-    restricted_pages = ['list_users', 'view_user', 'edit', 'delete', 'borrow', 'delete_movie', 'view_user_movies', 'view_all_user_movies']
+    restricted_pages = ['list_users', 'view_user', 'edit', 'delete', 'add_subject', 'delete_subject', 'edit_subject', 'select', 'deselect', 'view_user_subjects', 'view_all_user_subjects']
     if 'logged_in' not in session and request.endpoint in restricted_pages:
         flash("Please log in.")
         return redirect('/login')
@@ -97,13 +97,13 @@ def add_user():
                     flash ("An account with that email is already in use. Try logging in.")
                     return redirect('/register')
 
-                #try:
-                #    cursor.execute(sql, values)
-                #    result = cursor.fetchone()
-                #    connection.commit()
-                #except pymysql.err.DataError:
-                #    flash ("Text fields cannot exceed 255 characters. Please use shorter lengths.")
-                #    return redirect('/register')
+                try:
+                    cursor.execute(sql, values)
+                    result = cursor.fetchone()
+                    connection.commit()
+                except pymysql.err.DataError:
+                    flash ("Text fields cannot exceed 255 characters. Please use shorter lengths.")
+                    return redirect('/register')
 
                 sql = """SELECT * FROM users WHERE email = %s AND password = %s"""
                 values = (
@@ -254,6 +254,35 @@ def list_subjects():
             result = cursor.fetchall()
     return render_template('subjects_list.html', result=result)
 
+# Add a subject into the database
+@app.route('/add_subject', methods=['GET', 'POST'])
+def add_subject():
+
+    if request.method == 'POST':
+        with create_connection() as connection:
+            with connection.cursor() as cursor:
+                sql = """INSERT INTO subjects 
+                (name, faculty, HOF, credits, summary)
+                VALUES (%s, %s, %s, %s, %s)
+                """
+                values = (
+                    request.form['name'],
+                    request.form['faculty'],
+                    request.form['HOF'],
+                    request.form['credits'],
+                    request.form['summary']
+                    )
+
+                try:
+                    cursor.execute(sql, values)
+                    connection.commit()
+                except pymysql.err.IntegrityError:
+                    flash('Subject already exists.')
+                    return redirect('/add_subject')
+        flash('Subject added.')
+        return redirect('/')
+    return render_template('subjects_add.html')
+
 # Delete a subject from the database
 @app.route('/delete_subject')
 def delete_subject():
@@ -278,11 +307,44 @@ def delete_subject():
     flash("g̷̨̛̞͉̥̹͈̩̥̦͎̔͂̉̇̂̅̌̀͝o̷̢̡̲̠̟̪̻̬̝͙̥̫͍̥͗͌̈̔̋̂͐͋͛͊̌̈͆͝n̸͓̣͈͐ę̴͓͓̰̥̫̔̉")
     return redirect('/')
 
-# Select a subject for yourself - Max 5 subjects per user
+# Edit subject details
+@app.route('/edit_subject', methods=['GET', 'POST'])
+def edit_subject():
+    if request.method == 'POST':
+        with create_connection() as connection:
+            with connection.cursor() as cursor:
+                sql = """UPDATE subjects SET
+                    name = %s,
+                    faculty = %s,
+                    HOF = %s,
+                    credits = %s,
+                    summary = %s
+                    WHERE id = %s"""
+                values = (
+                    request.form['name'],
+                    request.form['faculty'],
+                    request.form['HOF'],
+                    request.form['credits'],
+                    request.form['summary'],
+                    request.form['id']
+                )
+                cursor.execute(sql, values)
+                connection.commit()
+        return redirect('/subjects_list')
+    else:
+        with create_connection() as connection:
+            with connection.cursor() as cursor:
+                sql = "SELECT * FROM subjects WHERE id = %s"
+                values = (request.args['id'])
+                cursor.execute(sql, values)
+                result = cursor.fetchone()
+        return render_template('subjects_edit.html', result=result)
+
+# Select a subject for yourself - Max 5 subjects per user - Between start and end date (YYYY/MM/DD, HR,MIN,SEC)
 @app.route('/select_subject')
 def select():
     datenow = datetime.now()
-    duedate = datetime(2022,7,12, 11,59,59)
+    duedate = datetime(2022,7,20, 23,59,59)
     startdate = datetime(2022,7,6)
     if datenow > duedate or datenow < startdate:
         flash('The subject selection period has ended. If you need to add a subject, please notify your teacher.')
@@ -291,14 +353,14 @@ def select():
         with create_connection() as connection:
             with connection.cursor() as cursor:
                 sql = """SELECT
-	                        users.first_name, subjects.name 
+                            users.first_name, subjects.name 
                         FROM
-	                        student_subjects
-	                        JOIN 
-		                        users ON student_subjects.userid = users.id
-	                        JOIN
-		                        subjects ON student_subjects.subjectid = subjects.id
-                            WHERE users.id = %s"""
+                            student_subjects
+                        JOIN 
+                            users ON student_subjects.userid = users.id
+                        JOIN
+                            subjects ON student_subjects.subjectid = subjects.id
+                        WHERE users.id = %s"""
                 values = (session['id'])
                 cursor.execute(sql, values)
                 result = cursor.fetchall()
@@ -320,8 +382,6 @@ def select():
                     return redirect('/subjects_list')
         flash('Subject selected.')
         return redirect('/')
-
-
 
 # Remove a subject from your selection
 @app.route('/deselect_subject')
@@ -348,13 +408,13 @@ def view_user_subjects():
     with create_connection() as connection:
         with connection.cursor() as cursor:
             sql = """SELECT
-	                    users.first_name, subjects.name, subjects.HOF, subjects.faculty, subjects.id 
-                    FROM
-	                    student_subjects
-	                    JOIN 
-		                    users ON student_subjects.userid = users.id
-	                    JOIN
-		                    subjects ON student_subjects.subjectid = subjects.id
+                            users.first_name, subjects.name, subjects.HOF, subjects.faculty, subjects.id 
+                        FROM
+                            student_subjects
+                        JOIN 
+                            users ON student_subjects.userid = users.id
+                        JOIN
+                            subjects ON student_subjects.subjectid = subjects.id
                         WHERE users.id = %s"""
             values = (request.args['id'])
             cursor.execute(sql, values)
@@ -365,6 +425,33 @@ def view_user_subjects():
             connection.commit()
     return render_template('subjects_selected.html', result=result, result2=result2)
 
+# Show students who have selected a certain subject
+@app.route('/subject_info')
+def subject_info():
+    if session['role'] != 'admin':
+        flash("Access Denied.")
+        return abort(404)
+
+    with create_connection() as connection:
+        with connection.cursor() as cursor:
+            sql = """SELECT
+                            users.id, users.first_name, users.last_name, users.email, users.year_level 
+                        FROM
+                            student_subjects
+                        JOIN 
+                            users ON student_subjects.userid = users.id
+                        JOIN
+                            subjects ON student_subjects.subjectid = subjects.id
+                        WHERE subjects.id = %s"""
+            values = (request.args['id'])
+            cursor.execute(sql, values)
+            result = cursor.fetchall()
+            sql2 = "SELECT * FROM subjects WHERE id = %s"
+            cursor.execute(sql2, values)
+            result2 = cursor.fetchone()
+            connection.commit()
+    return render_template('subjects_info.html', result=result, result2=result2)
+
 # Show all students and their classes
 @app.route('/subjects_selected_admin')
 def view_all_user_subjects():
@@ -374,13 +461,13 @@ def view_all_user_subjects():
     with create_connection() as connection:
         with connection.cursor() as cursor:
             sql = """SELECT
-	                    users.id, users.first_name, users.last_name, subjects.name, subjects.HOF, users.year_level 
-                    FROM
-	                    student_subjects
-	                    JOIN 
-		                    users ON student_subjects.userid = users.id
-	                    JOIN
-		                    subjects ON student_subjects.subjectid = subjects.id
+                            users.id, users.first_name, users.last_name, subjects.name, subjects.HOF, users.year_level 
+                        FROM
+                            student_subjects
+                        JOIN 
+                            users ON student_subjects.userid = users.id
+                        JOIN
+                            subjects ON student_subjects.subjectid = subjects.id
                         ORDER BY users.id"""
             cursor.execute(sql)
             result = cursor.fetchall()
@@ -390,7 +477,7 @@ def view_all_user_subjects():
 if __name__ == '__main__':
     import os
 
-    # This is required to allow flashing messages. We will cover this later.
+    # This is required to allow flashing messages.
     app.secret_key = os.urandom(32)
 
     HOST = os.environ.get('SERVER_HOST', 'localhost')

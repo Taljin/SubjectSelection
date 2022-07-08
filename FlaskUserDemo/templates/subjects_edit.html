@@ -1,0 +1,28 @@
+{% extends '_layout.html' %}
+
+{% block title %}Sign Up{% endblock %}
+
+{% block content %}
+<div id="signup_box">
+    <form method="post" enctype="multipart/form-data">
+        <input type="hidden" name="id" value="{{ result.id }}">
+        <label for="name">Subject Name:</label><br>
+        <input id="name" name="name" value="{{ result.name }}">
+        <br>
+        <label for="faculty">Faculty:</label><br>
+        <input id="faculty" name="faculty" value="{{ result.faculty }}">
+        <br>
+        <label for="HOF">HOF:</label><br>
+        <input id="HOF" name="HOF" value="{{ result.HOF }}">
+        <br>
+        <label for="credits">Credits:</label><br>
+        <input id="credits" name="credits" type="number" value="{{ result.credits }}">
+        <br>
+        <label for="summary">Summary:</label><br>
+        <input id="summary" name="summary" value="{{ result.summary }}">
+        <br>
+        <br>
+        <input type="submit" value="Update subject">
+    </form>
+</div>
+    {% endblock %}

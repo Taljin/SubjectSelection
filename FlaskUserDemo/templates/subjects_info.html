@@ -1,0 +1,38 @@
+{% extends '_layout.html' %}
+
+{% block title %}Home{% endblock %}
+
+{% block content %}
+
+<h1>{{ result2.name }}</h1>
+<h3>Students enrolled:</h3>
+<table>
+    <thead>
+        <tr>
+            <th>First Name</th>
+            <th>Last Name</th>
+            <th>Email</th>
+            <th>Year Level</th>
+            <th colspan="3">Actions</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for row in result %}
+        <tr>
+            <td>{{ row.first_name }}</td>
+            <td>{{ row.last_name }}</td>
+            <td>{{ row.email }}</td>
+            <td>{{ row.year_level }}</td>
+            <td>
+                <a href="/profile?id={{ row.id }}">
+                    Profile
+                </a>
+            </td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+<br>
+<a href="{{ url_for('list_subjects') }}">Subjects</a>
+{% endblock %}
+
