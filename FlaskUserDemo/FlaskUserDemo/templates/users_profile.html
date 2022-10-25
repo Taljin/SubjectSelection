@@ -1,0 +1,26 @@
+{% extends '_layout.html' %}
+
+{% block title %}Home{% endblock %}
+
+{% block content %}
+
+<h1>{{ result.first_name }} {{ result.last_name }}</h1>
+{{ result.email }}
+<br>
+{{ result.password }}
+<br>
+<br>
+<img class="profile_img" src="{{ url_for('static', filename='images/' + (result.avatar or 'default.png')) }}" height="300">
+<br>
+<br>
+<a href="/edit_user?id={{ result.id }}">Edit</a>
+<br>
+{% if result.id == session.id or session['role'] == 'admin' %}
+<a href="/delete_user?id={{ result.id }}"
+   onclick="return confirm('Are you sure you wish to delete {{ result.first_name }}?')">
+    Delete
+</a>
+{% endif %}
+<br>
+<a href="{{ url_for('list_users') }}">Dashboard</a>
+{% endblock %}

@@ -1,0 +1,28 @@
+{% extends '_layout.html' %}
+
+{% block title %}Sign Up{% endblock %}
+
+{% block content %}
+<div id="signup_box">
+    <form method="post" enctype="multipart/form-data">
+        <h1>Add Subject</h1>
+        <label for="name">Subject Name:</label><br>
+        <input id="name" name="name" required>
+        <br>
+        <label for="faculty">Faculty:</label><br>
+        <input id="faculty" name="faculty" required>
+        <br>
+        <label for="HOF">HOF:</label><br>
+        <input id="HOF" name="HOF" required>
+        <br>
+        <label for="credits">Credits:</label><br>
+        <input id="credits" name="credits" type="number" required>
+        <br>
+        <label for="summary">Summary:</label><br>
+        <input id="summary" name="summary" required>
+        <br>
+        <br>
+        <input class="submit " type="submit" value="Add a new subject">
+    </form>
+</div>
+{% endblock %}

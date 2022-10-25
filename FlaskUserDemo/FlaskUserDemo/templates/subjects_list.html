@@ -1,0 +1,63 @@
+{% extends '_layout.html' %}
+
+{% block title %}All Movies{% endblock %}
+
+{% block content %}
+
+<table>
+    <thead>
+        <tr>
+            <th>Name</th>
+            <th>HOF</th>
+            <th>Year Level</th>
+            <th colspan="4">Actions</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for row in result %}
+        <tr>
+            <td>{{ row.name }}</td>
+            <td>{{ row.HOF }}</td>
+            <td>{{ row.faculty }}</td>
+            <td>
+                <a href="/select_subject?id={{ row.id }}"
+                   onclick="return confirm('Select the subject: {{ row.name }}?')">
+                    Select
+                </a>
+            </td>
+            <td>
+                <a href="/subject_info?id={{ row.id }}">
+                    Info
+                </a>
+            </td>
+            {% if session['role'] == 'admin' %}
+            <td>
+                <a href="/delete_subject?id={{ row.id }}"
+                   onclick="return confirm('Are you sure you wish to delete {{ row.name }}? (This cannot be undone.)')">
+                    Delete
+                </a>
+            </td>
+            <td>
+                <a href="/edit_subject?id={{ row.id }}">
+                    Edit
+                </a>
+            </td>
+            {% endif %}
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+<br>
+{% if 'logged_in' in session %}
+<a href="{{ url_for('view_user_subjects', id=session['id']) }}">View your Subjects</a>
+{% endif %}
+<br>
+<br>
+{% if session['role'] == 'admin' %}
+<a href="{{ url_for('view_all_user_subjects') }}">View EVERYONES Subjects</a>
+<br>
+<br>
+<a href="{{ url_for('add_subject') }}">Add a subject</a>
+{% endif %}
+
+{% endblock %}

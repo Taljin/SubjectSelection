@@ -1,0 +1,54 @@
+{% extends '_layout.html' %}
+
+{% block title %}Sign Up{% endblock %}
+
+{% block content %}
+<div id="signup_box">
+    <form method="post" enctype="multipart/form-data">
+        <h1>Register</h1>
+        <label for="fn">First Name:</label><br>
+        <input id="fn" name="first_name" required>
+        <br>
+        <label for="ln">Last Name:</label><br>
+        <input id="ln" name="last_name" required>
+        <br>
+        <p id="message" style="color: red"></p>
+        <label for="email">Email:</label><br>
+        <input id="email" name="email" type="email" required>
+        <br>
+        <label for="pass">Password:</label><br>
+        <input id="pass" name="password" type="password" required>
+        <i class="bi-eye-slash" id="eye" onclick="myFunction()"></i>
+        <br>
+        <label for="pic">Avatar:</label><br>
+        <input id="pic" name="avatar" type="file" accept="image/*">
+        <br>
+        <br>
+        <input class="submit "type="submit" value="Add a new person">
+    </form>
+</div>
+<script>
+    let emailInput = document.querySelector('#email');
+    let message = document.querySelector('#message');
+
+    emailInput.addEventListener('input', checkUniqueEmail);
+
+    async function checkUniqueEmail() {
+        let response = await fetch('/checkemail?email=' + emailInput.value);
+        let json = await response.json();
+
+
+        if (json.status == 'OK') {
+            message.style.color = 'green';
+            message.textContent = 'Email is available';
+            
+            
+        } else {
+            message.style.color = 'red';
+            message.textContent = 'Email is taken';
+            emailInput.setCustomValidity('go back and log in peasant');
+            emailInput.validationMessage();
+        }
+    }
+</script>
+{% endblock %}

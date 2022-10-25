@@ -1,0 +1,202 @@
+{% extends '_layout.html' %}
+
+{% block title %}Home{% endblock %}
+
+{% block content %}
+
+<div class="headerbox">
+    <img class="img-fluid" src="static\images\pakcolair.png" alt="Pakuranga College Aerial View">
+    <div class="container-fluid overlap dark-background"></div>
+</div>
+
+<div class="container-fluid overlap">
+    <div class="center-div">
+        <img class="bannertxt" src="static\images\bannertxt.png" alt="Pakuranga College Subject Selection">
+    </div>
+</div>
+
+<div class="jumbotron jumbotron-fluid">
+    <div class="container-fluid">
+        <div class="row">
+            <div class="colbutton col" style="background-color:lavender;">.col-sm-6</div>
+            <div class="colbutton col-sm-3" style="background-color:cornflowerblue;">.col-sm-3</div>
+            <div class="colbutton col-sm-3" style="background-color:lavenderblush;">.col-sm-3</div>
+        </div>
+    </div>
+</div>
+
+<div class="row body-text relative">
+    <div class="square-wrapper">
+        <img id="fade-slide" class="img-fluid right-img square square-transition" src="static/images/nzqa.png" alt="NZQA Logo">
+    </div>
+
+    <div class="col-md-7 georgia-font">
+        <h1>DCAT</h1>
+        <p>
+            The "Digital Common Assessment Task" requires you to answer a series of questions about this topic. You do this under exam conditions, but you know the topic and questions beforehand, and can be very well prepared regarding what you will write.
+            <br>
+            <br>
+            The assessment is three hours long, but the three hours would normally be for two standards. Because we only do one, it means that this is double the time you are normally expected to have!
+            <br>
+            <br>
+            This page has the content that you need to learn, and gives you some guidance about what you should write.
+        </p>
+        <br>
+        <button type="button" data-toggle="modal" data-target="#myModal" class="btn btn-outline-dark">
+            Learn More About The Exam
+            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-arrow-bar-up" viewBox="0 0 16 16">
+                <path fill-rule="evenodd" d="M8 10a.5.5 0 0 0 .5-.5V3.707l2.146 2.147a.5.5 0 0 0 .708-.708l-3-3a.5.5 0 0 0-.708 0l-3 3a.5.5 0 1 0 .708.708L7.5 3.707V9.5a.5.5 0 0 0 .5.5zm-7 2.5a.5.5 0 0 1 .5-.5h13a.5.5 0 0 1 0 1h-13a.5.5 0 0 1-.5-.5z" />
+            </svg>
+        </button>
+        <br>
+        <br>
+    </div>
+</div>
+
+<!-- Modal -->
+<div class="modal fade" id="myModal" role="dialog">
+    <div class="modal-dialog modal-xl">
+
+        <!-- Modal content-->
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title">The DCAT Exam</h4>
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+            </div>
+            <div class="modal-body">
+                <p>You need to have answers to some quite specific questions. See the actual 2020 exam <a href="https://www.nzqa.govt.nz/nqfdocs/ncea-resource/exams/2020/91898-exm-2020.pdf" target="_blank">here,</a> but a summary is as follows:</p>
+                <ul>
+                    <li>Two DIFFERENT examples of encryption's use in the real world.</li>
+                    <li>A current application of encryption that addresses an opportunity.  There's so many possible examples that this should be easy!</li>
+                    <li>
+                        Mechanism 1 - an algorithm or technique.
+                        <ul>
+                            <li>Public/Private key cryptography</li>
+                            <li>Password hashing</li>
+                            <li>AES encryption</li>
+                        </ul>
+                    </li>
+                    <li>
+                        Mechanism 2 - a procedure or protocol
+                        <ul>
+                            <li>Protecting data using encryption</li>
+                            <li>Communicating using PGP</li>
+                        </ul>
+                    </li>
+                    <li>
+                        Impact- you should  be able to talk meaningfully about the following:
+                        <ul>
+                            <li>Ethical issues</li>
+                            <li>Social impact</li>
+                            <li>Sustainability</li>
+                            <li>Human factors</li>
+                            <li>Future proofing</li>
+                        </ul>
+                    </li>
+                </ul>
+                <p>In the exam, you will be given a choice of two "impacts" to write about, but you won't know what those two are until you see the exam paper. This means that you need to prepare for pretty much all of them. Luckily, it is very easy to talk about most of these impacts - see <a href="https://www.nzqa.govt.nz/ncea/subjects/assessment-reports/digital-technologies-l2/" target="_blank">here!</a></p>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+            </div>
+        </div>
+
+    </div>
+</div>
+
+<div id="info-cards" class="jumbotron jumbotron-fluid">
+    <div class="container">
+
+        <div class="card-deck">
+
+            <div class="card bg-dark card-hover">
+                <img class="card-img-top" src="images/caesar.png" alt="Caesar Cipher">
+                <div class="card-body text-center hover-colour">
+                    <a class="stretched-link" data-toggle="collapse" href="#collapseOne"></a>
+                    <p class="card-text fade-text">Read More</p>
+                    <p class="card-text">What is Encryption?</p>
+                </div>
+            </div>
+
+            <div class="card bg-dark card-hover">
+                <img class="card-img-top" src="images/skytale.png" alt="Old Skytale">
+                <div class="card-body text-center hover-colour">
+                    <a class="stretched-link" data-toggle="collapse" href="#collapseTwo"></a>
+                    <p class="card-text fade-text">Read More</p>
+                    <p class="card-text">History of Encryption</p>
+                </div>
+            </div>
+
+            <div class="card bg-dark card-hover">
+                <img class="card-img-top" src="images/countdown.png" alt="Countdown Supermarket">
+                <div class="card-body text-center hover-colour">
+                    <a class="stretched-link" data-toggle="collapse" href="#collapseThree"></a>
+                    <p class="card-text fade-text">Read More</p>
+                    <p class="card-text">How is Encryption used today?</p>
+
+                </div>
+            </div>
+
+        </div>
+
+        <br>
+        <div id="accordion">
+            <div class="card bg-dark">
+
+                <div id="collapseOne" class="collapse" data-parent="#accordion">
+                    <div class="card-body body-text">
+                        <h2>What is Encryption?</h2>
+                        <p>When a message is encrypted, it is transformed into a format that cannot be read, unless you have the key.</p>
+                        <p>
+                            A simple example would be a "Substitution" method, where (for example) the letter A is replaced with the letter B, the letter B is replace with the letter C etc. So the message "Pancakes for lunch" would become "Qbodblft gps mvodi". The person receiving the message would need to know the "key", which is to substitute in reverse.
+                            <br>
+                            This  particular "substitution" cipher is commonly known as the "Caesar cipher".
+                        </p>
+                    </div>
+                </div>
+
+                <div id="collapseTwo" class="collapse" data-parent="#accordion">
+                    <div class="card-body body-text">
+                        <h2>History of Encryption</h2>
+                        <p>A lot of the history of encryption is military and political. Armies and governments have always needed to send instructions and information secretly, and you can never be sure that a message won't be read by an enemy (your messenger might be a traitor, or your messenger may be captured).</p>
+                        <p>For thousands of years, there has been an "arms race" where enemies get better at decrypting messages, so governments have had to devise ever more complex encryption methods.</p>
+                    </div>
+                </div>
+
+                <div id="collapseThree" class="collapse" data-parent="#accordion">
+                    <div class="card-body body-text">
+                        <h2>How is Encryption used today?</h2>
+                        <p>Supermarkets like Countdown use encryption as part of their everyday workflow. Electronic payment, online shopping, and Onecard membership all require encryption in order to stay secure and private to their users. Without it, our personal information like card details, addresses and passwords could easily be stolen.</p>
+                        <p>Encryption has been used in Countdown to greatly streamline the buyer's experience when shopping. It has allowed shoppers to quickly pay without cash, and even without the need of waiting in line to scan your items. It has also allowed us to easily purchase products from the comfort of our homes, making it easy to collect and saving us time and energy.</p>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<div id="foot">
+    <div class="container">
+        <p>Alex Tee | Pakuranga College | 2021</p>
+        <p>Any information on this page may or may not be accurate.</p>
+    </div>
+</div>
+
+
+<h1>hellow</h1>
+
+{% if 'logged_in' in session %}
+<a href="{{ url_for('view_user', id=session['id']) }}">Profile</a>
+<br>
+<a href="{{ url_for('edit', id=session['id']) }}">Edit</a>
+{% endif %}
+<br>
+<br>
+{% if session['role'] == 'admin' %}
+<a href="{{ url_for('list_users') }}">Dashboard</a>
+{% endif %}
+<br>
+<a href="{{ url_for('list_subjects') }}">Subjects</a>
+{% endblock %}
